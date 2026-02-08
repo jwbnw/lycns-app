@@ -1,22 +1,28 @@
 "use client"
 
+import { useRouter } from "next/navigation" // Import useRouter
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 export default function UploadCard() {
+  const router = useRouter() // Initialize the router
   const [isMinting, setIsMinting] = useState(false)
   const [file, setFile] = useState<File | null>(null)
 
   // Mock Minting Process
   const handleMint = () => {
-    setIsMinting(true)
-    setTimeout(() => {
-      setIsMinting(false)
-      alert("Mock: License Minted on Solana Devnet!")
-    }, 3000)
-  }
+      setIsMinting(true)
+      
+      // Simulate the "Securing" process
+      setTimeout(() => {
+        setIsMinting(false)
+        // Redirect to the Setup page with mock parameters
+        router.push('/setup?status=verified&file=' + (file?.name || 'asset'))
+      }, 2000)
+    }
+  
 
   return (
     <Card className="w-full max-w-md bg-zinc-950 border-zinc-800 text-zinc-100">

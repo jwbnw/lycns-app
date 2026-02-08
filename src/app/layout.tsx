@@ -19,11 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             LYCNS<span className="text-emerald-500">.</span>
           </Link>
           <div className="flex gap-4 items-center">
-            <Link href="/setup" className="text-sm text-zinc-400 hover:text-white transition-colors">
-              Pricing
-            </Link>
+          <Link href="/dashboard" className="text-sm text-zinc-400 hover:text-white transition-colors">
+            My Assets
+          </Link>
             <Button variant="outline" className="border-zinc-700 text-xs h-8">
-              Connect Wallet
+              Sign In
             </Button>
           </div>
         </nav>

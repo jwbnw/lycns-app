@@ -4,12 +4,12 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { CheckCircle2, Download, ShieldCheck } from "lucide-react"
 
-export function PurchasePanel({ imageId }: { imageId: string }) {
+// Added 'price' to the interface
+export function PurchasePanel({ imageId, price = "250" }: { imageId: string, price?: string }) {
   const [status, setStatus] = useState<'idle' | 'processing' | 'success'>('idle')
 
   const handleMockPurchase = () => {
     setStatus('processing')
-    // Simulate Solana Network Latency
     setTimeout(() => setStatus('success'), 2500)
   }
 
@@ -26,9 +26,6 @@ export function PurchasePanel({ imageId }: { imageId: string }) {
         <Button className="w-full bg-white text-black hover:bg-zinc-200 gap-2 h-12">
           <Download className="w-4 h-4" /> Download High-Res Original
         </Button>
-        <p className="text-[10px] text-zinc-500 uppercase tracking-tighter">
-          Immutable rights granted to current wallet holder
-        </p>
       </div>
     )
   }
@@ -36,7 +33,7 @@ export function PurchasePanel({ imageId }: { imageId: string }) {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h1 className="text-4xl font-black tracking-tighter">BREAKING: Downtown Rally</h1>
+        <h1 className="text-4xl font-black tracking-tighter">Verified Asset</h1>
         <p className="text-zinc-400">Exclusive digital rights for editorial use.</p>
       </div>
 
@@ -52,7 +49,8 @@ export function PurchasePanel({ imageId }: { imageId: string }) {
         <div className="space-y-3 pt-4">
           <div className="flex justify-between items-end">
             <span className="text-zinc-500 text-sm">Editorial License</span>
-            <span className="text-2xl font-bold">$250.00</span>
+            {/* DYNAMIC PRICE HERE */}
+            <span className="text-2xl font-bold">${price}.00</span>
           </div>
           <Button 
             onClick={handleMockPurchase}

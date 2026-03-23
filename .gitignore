@@ -42,3 +42,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# Anchor / Rust
+anchor/target/
+anchor/.anchor/
+anchor/node_modules/
+anchor/.DS_Store
+anchor/**/*.rs.bk
+anchor/node_modules
+anchor/test-ledger
+anchor/.yarn

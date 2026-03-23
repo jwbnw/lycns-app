@@ -22,8 +22,7 @@ describe("lycns-protocol", () => {
       mockPixelHash, 
       Array(32).fill(0), 
       new anchor.BN(1000000), 
-      false,
-      1
+      false
     )
     .accountsStrict({ // Use accountsStrict to force manual account passing
       asset: assetPda,
@@ -44,7 +43,7 @@ describe("lycns-protocol", () => {
 
     try {
       await program.methods
-        .registerAsset(mockPixelHash, Array(32).fill(0), new anchor.BN(1000000), false, 1)
+        .registerAsset(mockPixelHash, Array(32).fill(0), new anchor.BN(1000000), false)
         .accounts({
           asset: assetPda,
           owner: provider.wallet.publicKey,

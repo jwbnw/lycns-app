@@ -13,8 +13,8 @@ pub mod lycns_protocol {
         pixel_hash: [u8; 32], 
         manifest_hash: [u8; 32], 
         price: u64,
-        is_exclusive: bool,
-        claimed_trust: u8, 
+        is_exclusive: bool
+        // claimed_trust: u8, // less than ideal, let's look into a better option.... backend signing somthing first to verify
     ) -> Result<()> {
         let asset = &mut ctx.accounts.asset;
         asset.owner = *ctx.accounts.owner.key;
@@ -26,11 +26,13 @@ pub mod lycns_protocol {
         
         // Logic: Only allow the frontend to claim Level 1 or 2 
         // if a manifest actually exists.
+        /*
         asset.trust_level = if manifest_hash != [0; 32] {
             claimed_trust // Use the verified level from the client
         } else {
           TrustLevel::Unverified as u8
         };
+        8*/
 
         asset.bump = ctx.bumps.asset;
 
@@ -100,6 +102,7 @@ pub struct PurchaseLicense<'info> {
     pub system_program: Program<'info, System>,
 }
 
+/*
 // Not implemented currently - for future use in dispute resolution or asset management
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)] // Ensures it occupies exactly 1 byte
@@ -118,6 +121,7 @@ pub enum TrustLevel {
     Software = 1,     // C2PA Signed via Software (Photoshop/Privy)
     Hardware = 2,     // Secure enclave signed (Leica/Sony/Mobile)
 }
+*/
 
 #[account]
 #[derive(Default)] // Optional: Good practice for initialization
@@ -126,16 +130,16 @@ pub struct Asset {
     pub pixel_hash: [u8; 32],
     pub manifest_hash: [u8; 32],
     pub price: u64,
-    pub trust_level: u8,
+   // pub trust_level: u8,
     pub is_exclusive: bool,
     pub is_sold: bool,
-    pub status: u8, 
+  //  pub status: u8, 
     pub bump: u8,
 }
 
 impl Asset {
     // 8 (discriminator) + 32 + 32 + 32 + 8 + 1 + 1 + 1 + 1 + 1 = 117
-    pub const LEN: usize = 8 + 32 + 32 + 32 + 8 + 1 + 1 + 1 + 1 + 1;
+    pub const LEN: usize = 8 + 32 + 32 + 32 + 8 + 1 + 1 + 1 + 1 + 1; // leave extra bits for now
 }
 
 #[error_code]

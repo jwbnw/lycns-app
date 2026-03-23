@@ -186,20 +186,12 @@ export type LycnsProtocol = {
             "type": "u64"
           },
           {
-            "name": "trustLevel",
-            "type": "u8"
-          },
-          {
             "name": "isExclusive",
             "type": "bool"
           },
           {
             "name": "isSold",
             "type": "bool"
-          },
-          {
-            "name": "status",
-            "type": "u8"
           },
           {
             "name": "bump",

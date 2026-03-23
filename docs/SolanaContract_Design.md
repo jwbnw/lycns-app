@@ -29,11 +29,11 @@ The `Asset` account holds the "On-Chain Deed" to the media.
 | **Pixel Hash** | `u8[32]` | 32 | The immutable visual fingerprint. |
 | **Manifest Hash** | `u8[32]` | 32 | The SHA-256 hash of the C2PA metadata. |
 | **Price** | `u64` | 8 | Listing price in Lamports. |
-| **Trust Level** | `u8` | 1 | `0`: Unverified, `1`: Software, `2`: Hardware. |
+| **Trust Level** | `u8` | 1 | `0`: Unverified, `1`: Software, `2`: Hardware. | NOTE: Not currently included
 | **Is Exclusive** | `bool` | 1 | If true, only one purchase is allowed. |
 | **Is Sold** | `bool` | 1 | Tracks if an exclusive buyout has occurred. |
+| **pub status:** | `u8` | 1 | Status of Image in a case of a dispute. `0`: Active, `1`: Disputed, `2`: Locked, `3`: Sourced | NOTE: Not currently included 
 | **Bump** | `u8` | 1 | The PDA nonce for address validation. |
-
 **Total Space:** 116 Bytes
 
 ---

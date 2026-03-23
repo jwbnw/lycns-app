@@ -22,6 +22,7 @@ This table mirrors the Solana `Asset` accounts. It acts as a visual cache of reg
 | `id` | `UUID` | Internal primary key. |
 | `owner_wallet` | `TEXT` | Solana public key of the creator. |
 | **`pixel_hash`** | `TEXT` | **UNIQUE Index.** SHA-256 fingerprint of the visual pixels. |
+| `phash`** | `TEXT` | pHash to perform visual similarity searches |
 | `manifest_hash` | `TEXT` | SHA-256 fingerprint of the C2PA manifest. |
 | `manifest_json` | `JSONB` | Extracted C2PA metadata for rich querying. |
 | `image_url` | `TEXT` | URL pointing to Supabase Storage. |

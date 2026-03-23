@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS assets (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   owner_wallet TEXT NOT NULL,          -- The Solana Pubkey of the creator
   pixel_hash TEXT NOT NULL UNIQUE,      -- SHA-256 of raw pixels (Solana PDA Seed)
+  p_hash TEXT,                          -- pHash for quick visual similarity checks (not unique)
   manifest_hash TEXT,                  -- SHA-256 of the C2PA manifest
   manifest_json JSONB,                 -- Full parsed C2PA assertions for querying
   

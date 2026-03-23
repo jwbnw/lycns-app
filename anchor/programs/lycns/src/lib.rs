@@ -94,6 +94,7 @@ pub struct PurchaseLicense<'info> {
 }
 
 #[account]
+#[derive(Default)] // Optional: Good practice for initialization
 pub struct Asset {
     pub owner: Pubkey,
     pub pixel_hash: [u8; 32],
@@ -102,11 +103,13 @@ pub struct Asset {
     pub trust_level: u8,
     pub is_exclusive: bool,
     pub is_sold: bool,
+    pub status: u8, // Adding that status byte we discussed for future-proofing
     pub bump: u8,
 }
 
 impl Asset {
-    pub const LEN: usize = 8 + 32 + 32 + 32 + 8 + 1 + 1 + 1 + 1;
+    // 8 (discriminator) + 32 + 32 + 32 + 8 + 1 + 1 + 1 + 1 + 1 = 117
+    pub const LEN: usize = 8 + 32 + 32 + 32 + 8 + 1 + 1 + 1 + 1 + 1;
 }
 
 #[error_code]

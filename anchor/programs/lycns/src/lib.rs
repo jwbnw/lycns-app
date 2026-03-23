@@ -93,6 +93,16 @@ pub struct PurchaseLicense<'info> {
     pub system_program: Program<'info, System>,
 }
 
+// Not implemented currently - for future use in dispute resolution or asset management
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq)]
+#[repr(u8)] // Ensures it occupies exactly 1 byte
+pub enum AssetStatus {
+    Active = 0,     // Normal, listed, or owned
+    Disputed = 1,   // Under review by the protocol
+    Locked = 2,     // Frozen due to verified copyright theft
+    Sourced = 3,    // Optional: Asset was imported from a 3rd party registry
+}
+
 #[account]
 #[derive(Default)] // Optional: Good practice for initialization
 pub struct Asset {
@@ -103,7 +113,7 @@ pub struct Asset {
     pub trust_level: u8,
     pub is_exclusive: bool,
     pub is_sold: bool,
-    pub status: u8, // Adding that status byte we discussed for future-proofing
+    pub status: u8, 
     pub bump: u8,
 }
 

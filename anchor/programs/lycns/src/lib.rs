@@ -13,7 +13,8 @@ pub mod lycns_protocol {
         pixel_hash: [u8; 32], 
         manifest_hash: [u8; 32], 
         price: u64,
-        is_exclusive: bool
+        is_exclusive: bool,
+        claimed_trust: u8, 
     ) -> Result<()> {
         let asset = &mut ctx.accounts.asset;
         asset.owner = *ctx.accounts.owner.key;
@@ -23,8 +24,14 @@ pub mod lycns_protocol {
         asset.is_exclusive = is_exclusive;
         asset.is_sold = false;
         
-        // Trust Level Logic: 2 = C2PA Verified, 0 = Generic Upload
-        asset.trust_level = if manifest_hash != [0; 32] { 2 } else { 0 };
+        // Logic: Only allow the frontend to claim Level 1 or 2 
+        // if a manifest actually exists.
+        asset.trust_level = if manifest_hash != [0; 32] {
+            claimed_trust // Use the verified level from the client
+        } else {
+          TrustLevel::Unverified as u8
+        };
+
         asset.bump = ctx.bumps.asset;
 
         msg!("Asset Registered. Pixel Hash: {:?}", pixel_hash);
@@ -101,6 +108,15 @@ pub enum AssetStatus {
     Disputed = 1,   // Under review by the protocol
     Locked = 2,     // Frozen due to verified copyright theft
     Sourced = 3,    // Optional: Asset was imported from a 3rd party registry
+}
+
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq)]
+#[repr(u8)]
+pub enum TrustLevel {
+    Unverified  = 0,   // None
+    Software = 1,     // C2PA Signed via Software (Photoshop/Privy)
+    Hardware = 2,     // Secure enclave signed (Leica/Sony/Mobile)
 }
 
 #[account]

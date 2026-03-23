@@ -198,6 +198,10 @@ export type LycnsProtocol = {
             "type": "bool"
           },
           {
+            "name": "status",
+            "type": "u8"
+          },
+          {
             "name": "bump",
             "type": "u8"
           }

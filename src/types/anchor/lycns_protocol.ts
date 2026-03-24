@@ -15,9 +15,6 @@ export type LycnsProtocol = {
   "instructions": [
     {
       "name": "purchaseLicense",
-      "docs": [
-        "Atomic purchase with a 1.5% protocol fee."
-      ],
       "discriminator": [
         42,
         213,
@@ -55,9 +52,6 @@ export type LycnsProtocol = {
     },
     {
       "name": "registerAsset",
-      "docs": [
-        "Registers a new asset. The PDA is derived from the pixel_hash."
-      ],
       "discriminator": [
         21,
         80,
@@ -121,6 +115,15 @@ export type LycnsProtocol = {
           }
         },
         {
+          "name": "licenseHash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
           "name": "price",
           "type": "u64"
         },
@@ -151,6 +154,11 @@ export type LycnsProtocol = {
       "code": 6000,
       "name": "assetAlreadySold",
       "msg": "This exclusive asset has already been sold."
+    },
+    {
+      "code": 6001,
+      "name": "assetNotActive",
+      "msg": "This asset is not currently active for purchase."
     }
   ],
   "types": [
@@ -182,8 +190,25 @@ export type LycnsProtocol = {
             }
           },
           {
+            "name": "licenseHash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
             "name": "price",
             "type": "u64"
+          },
+          {
+            "name": "trustLevel",
+            "type": "u8"
+          },
+          {
+            "name": "status",
+            "type": "u8"
           },
           {
             "name": "isExclusive",

@@ -21,6 +21,7 @@ describe("lycns-protocol", () => {
     .registerAsset(
       mockPixelHash, 
       Array(32).fill(0), 
+      Array(32).fill(0),
       new anchor.BN(1000000), 
       false
     )
@@ -43,7 +44,7 @@ describe("lycns-protocol", () => {
 
     try {
       await program.methods
-        .registerAsset(mockPixelHash, Array(32).fill(0), new anchor.BN(1000000), false)
+        .registerAsset(mockPixelHash, Array(32).fill(0), Array(32).fill(0), new anchor.BN(1000000), false)
         .accounts({
           asset: assetPda,
           owner: provider.wallet.publicKey,

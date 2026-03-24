@@ -22,13 +22,14 @@ This table mirrors the Solana `Asset` accounts. It acts as a visual cache of reg
 | `id` | `UUID` | Internal primary key. |
 | `owner_wallet` | `TEXT` | Solana public key of the creator. |
 | **`pixel_hash`** | `TEXT` | **UNIQUE Index.** SHA-256 fingerprint of the visual pixels. |
-| `phash`** | `TEXT` | pHash to perform visual similarity searches |
+| `p_hash`** | `TEXT` | pHash to perform visual similarity searches |
 | `manifest_hash` | `TEXT` | SHA-256 fingerprint of the C2PA manifest. |
 | `manifest_json` | `JSONB` | Extracted C2PA metadata for rich querying. |
+| `license_hash ` | `TEXT` | SHA-256 of the specific license terms |
+| `license_type` | `TEXT` | Default: `standard`. Options: `exclusive`, `limited`. |
 | `image_url` | `TEXT` | URL pointing to Supabase Storage. |
 | `price_lamports` | `BIGINT` | Price in Lamports (1 SOL = 1,000,000,000 lamports). |
 | `trust_level` | `INTEGER` | `0` = Unverified, `1` = Software signed, `2` = Hardware signed. |
-| `license_type` | `TEXT` | Default: `standard`. Options: `exclusive`, `limited`. |
 | `is_exclusive` | `BOOLEAN` | True if image can only be purchased once. |
 | `is_sold` | `BOOLEAN` | True if the exclusive image has been bought. |
 | `status` | `TEXT` | `active`, `disputed`, `locked`. |
@@ -44,11 +45,14 @@ Keeps track of licensing transactions off-chain to power user "Libraries" and fi
 | `asset_id` | `UUID` | Foreign Key $\rightarrow$ `assets.id`. |
 | `buyer_wallet` | `TEXT` | Solana public key of the buyer. |
 | `seller_wallet` | `TEXT` | Solana public key of the seller. |
+| `asset_pda ` | `TEXT` |  The Solana PDA address of the asset |
+| `license_hash ` | `TEXT` | SHA-256 of the specific license terms |
+| `license_type` | `TEXT` | Default: `standard`. Options: `exclusive`, `limited`. |
+| `license_terms_json` | `TEXT` | Full copy of the terms at the MOMENT of sale |
 | **`tx_signature`** | `TEXT` | **UNIQUE.** The Solana transaction ID (On-chain proof of payment). |
 | `price_paid_lamports` | `BIGINT` | Gross SOL spent by buyer. |
 | `protocol_fee_lamports` | `BIGINT` | The 1.5% cut routed to the Lycns treasury. |
-| `license_snapshot` | `TEXT` | License terms at the time of purchase. |
-
+| `creator_net_lamports ` | `BIGINT` | The 98.5% the creator received |
 ---
 
 ### `disputes` Table (The Courtroom)

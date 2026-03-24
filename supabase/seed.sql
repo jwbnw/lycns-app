@@ -1,89 +1,107 @@
 -- ==========================================
--- SEED DATA FOR LYCNS PROTOCOL (CLEAN VERSION)
+-- SEED DATA FOR LYCNS PROTOCOL
 -- ==========================================
 
--- 1. Seed a "Verified" Asset
+-- 1. Create a "Test Creator" Asset
+-- This asset represents a high-trust, Hardware-verified image (Trust Level 2)
 INSERT INTO assets (
-  id,
   owner_wallet,
+  solana_address,
   pixel_hash,
   p_hash,
-  manifest_hash,
+  license_hash,
+  license_type,
   image_url,
   price_lamports,
   trust_level,
-  license_type,
-  is_exclusive,
-  status,
-  manifest_json
-) VALUES (
-  'e5b1b7a0-1234-4a5b-8c9d-111111111111',
-  'Addr_Verified_Creator_1111', 
-  'hash_pixel_verified_001', 
-  'hash_p_hash_verified_001',
-  'hash_manifest_verified_001',
-  'https://placehold.co/600x400.png',
-  1000000000, 
-  2,          
-  'standard',
-  false,
-  'active',
-  '{"publisher": "Sony A7R V"}'
-);
-
--- 2. Seed an "Unverified" Asset
-INSERT INTO assets (
-  id,
-  owner_wallet,
-  pixel_hash,
-  p_hash,
-  image_url,
-  price_lamports,
-  trust_level,
-  license_type,
   is_exclusive,
   status
 ) VALUES (
-  'f6c2c8b1-5678-4b6c-9d0e-222222222222',
-  'Addr_Thief_9999',
-  'hash_pixel_unverified_002', 
-  'hash_p_hash_unverified_002',
-  'https://placehold.co/400x400.png',
-  500000000, 
-  0,         
-  'standard',
+  'DxH9v86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8X8X8', -- Mock Creator Wallet
+  '7nE9v86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8X8X8', -- Mock Asset PDA
+  'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', -- SHA-256 for "Empty File"
+  'f0f0f0f0f0f0f0f0', -- Mock pHash
+  '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', -- Mock License Hash (Editorial v1)
+  'editorial',
+  'https://placehold.co/600x400/png?text=Verified+Asset',
+  1500000000, -- 1.5 SOL
+  2, -- Hardware Verified
   false,
   'active'
 );
 
--- 3. Seed a Purchase Record
+-- 2. Create a "Sold Exclusive" Asset
+-- Proves the 'is_sold' and 'is_exclusive' logic
+INSERT INTO assets (
+  owner_wallet,
+  solana_address,
+  pixel_hash,
+  p_hash,
+  license_hash,
+  license_type,
+  image_url,
+  price_lamports,
+  trust_level,
+  is_exclusive,
+  is_sold,
+  status
+) VALUES (
+  'DxH9v86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8X8X8',
+  'AvK9v86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8X8X8',
+  'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce',
+  'aaaaaaaaaaaaaaaa',
+  '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',
+  'exclusive',
+  'https://placehold.co/600x400/png?text=Sold+Exclusive',
+  5000000000, -- 5.0 SOL
+  1, -- Software Verified
+  true,
+  true,
+  'active'
+);
+
+-- 3. Seed a Purchase Record (The Newsroom Archive)
+-- Ties the sold exclusive asset to a buyer
 INSERT INTO purchases (
   asset_id,
   buyer_wallet,
   seller_wallet,
+  asset_pda,
+  license_hash,
+  license_type,
+  license_terms_json,
   tx_signature,
-  price_paid_lamports,
+  price_total_lamports,
   protocol_fee_lamports,
-  license_snapshot
+  creator_net_lamports
 ) VALUES (
-  'e5b1b7a0-1234-4a5b-8c9d-111111111111',
-  'Addr_Buyer_5555',
-  'Addr_Verified_Creator_1111',
-  'sig_abc_123_confirmation_hash',
-  1000000000,
-  15000000,
-  'standard'
+  (SELECT id FROM assets WHERE is_exclusive = true LIMIT 1),
+  'BuyerX9v86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8X',
+  'DxH9v86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8X8X8',
+  'AvK9v86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8X8X8',
+  '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',
+  'exclusive',
+  '{"terms": "Full exclusive buyout", "usage": "All Media", "duration": "Perpetual"}',
+  '5ztY86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X8X', -- Mock TX
+  5000000000, -- 5.0 SOL
+  75000000,   -- 1.5% Fee (0.075 SOL)
+  4925000000  -- 98.5% Net (4.925 SOL)
 );
 
--- 4. Seed an Open Dispute
+-- 4. Seed a Dispute
+-- Shows an asset being contested
 INSERT INTO disputes (
   asset_id,
   challenger_wallet,
+  dispute_reason,
   status,
+  evidence_url,
   evidence_manifest
 ) VALUES (
-  'f6c2c8b1-5678-4b6c-9d0e-222222222222',
-  'Addr_Real_Artist_7777',
+  (SELECT id FROM assets WHERE trust_level = 2 LIMIT 1),
+  'BadActor86A5f5N6X8X1X8X8X8X8X8X8X8X8X8X8X8',
+  'Copyright Theft: I own the original RAW file.',
   'open',
-  '{"note": "Original RAW evidence provided"}'
+  'https://placehold.co/600x400/png?text=Evidence+File',
+  '{"assertion": "original_timestamp", "value": "2024-01-01T00:00:00Z"}'
 );

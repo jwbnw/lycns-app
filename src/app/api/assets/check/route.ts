@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
+
+/*
+The purpose of this API route is to check if an uploaded asset is unique 
+before allowing the user to proceed with registration. of Said asset.
+*/
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

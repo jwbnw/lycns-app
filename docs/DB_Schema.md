@@ -32,7 +32,9 @@ This table mirrors the Solana `Asset` accounts. It acts as a visual cache of reg
 | `trust_level` | `INTEGER` | `0` = Unverified, `1` = Software signed, `2` = Hardware signed. |
 | `is_exclusive` | `BOOLEAN` | True if image can only be purchased once. |
 | `is_sold` | `BOOLEAN` | True if the exclusive image has been bought. |
-| `status` | `TEXT` | `active`, `disputed`, `locked`. |
+| `asset_conflict_status` | `TEXT` | `active`, `disputed`, `locked`. | For conflict resolution
+| `asset_upload_status` | `TEXT` | `draft`, `pending`, `active`, `failed` | For upload status tracking'
+| `last_tx_signature` | `TEXT` | tracks last tx for easy lookup
 
 ---
 

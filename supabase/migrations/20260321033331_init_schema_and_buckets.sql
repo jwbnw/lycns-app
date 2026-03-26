@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS assets (
   
   -- Identity & Blockchain Pointers
   owner_wallet TEXT NOT NULL,          -- The Solana Pubkey of the creator
-  solana_address TEXT NOT NULL UNIQUE, -- The Program Derived Address (PDA) on-chain
+  solana_address TEXT UNIQUE, -- The Program Derived Address (PDA) on-chain
   pixel_hash TEXT NOT NULL UNIQUE,     -- SHA-256 of raw pixels (Solana PDA Seed)
   p_hash TEXT NOT NULL,                -- Perceptual Hash for visual similarity checks
   
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS assets (
   trust_level INTEGER DEFAULT 0,       -- 0: Unverified, 1: Software, 2: Hardware
   is_exclusive BOOLEAN DEFAULT FALSE,
   is_sold BOOLEAN DEFAULT FALSE,
-  status TEXT DEFAULT 'active',        -- 'active', 'disputed', 'locked'
+  asset_conflict_status TEXT DEFAULT 'active',        -- 'active', 'disputed', 'locked' -- kind of want to move this to disputes....then just check if there is one..
   
   -- Metadata
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()),

@@ -18,12 +18,12 @@ export async function POST(req: Request) {
       .from('assets')
       .update({ 
         status: 'active',
-        solana_pda: pdaAddress,
+        solana_address: pdaAddress,
         last_tx_signature: signature 
       })
       .eq('id', assetId);
 
-    if (error) throw error;
+    if (error) throw error; // In a production environment, we would want to handle this more gracefully, potentially rolling back the storage upload if the database insert fails. Also Log..
 
     return NextResponse.json({ success: true });
   } catch (err: any) {

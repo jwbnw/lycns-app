@@ -21,7 +21,7 @@ export async function POST(req: Request) {
         solana_address: pdaAddress,
         last_tx_signature: signature 
       })
-      .eq('id', assetId);
+      .eq('id', assetId); // this will return true/success even if rowcont is 0... consider doing somthing better to catcht the case of id sent != id in db... for now this is fine.
 
     if (error) throw error; // In a production environment, we would want to handle this more gracefully, potentially rolling back the storage upload if the database insert fails. Also Log..
 
